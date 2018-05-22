@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>GoTrue JS Demo Site</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500|Roboto+Mono" rel="stylesheet">
+</head>
+
+<body>
+  <h1>Netlify GoTrue JS Library</h1>
+  <p>Welcome to the playground of Netlify's
+    <a href="https://github.com/netlify/gotrue-js">gotrue-js library</a>.
+  </p>
+  <p>
+    You can test out the authentication methods with your own site. Take a peek at the
+    <a href="">source code</a> or
+    <a href="">deploy a copy to Netlify</a> to play around with the code by yourself.
+  </p>
+  <h2>Authentication methods</h2>
+  <nav class=" ">
+    <li>
+      <a href="#signup">Sign up</a>
+    </li>
+    <li>
+      <a href="#confirm ">Confirmation</a>
+    </li>
+    <li>
+      <a href="#log-in ">Log in</a>
+    </li>
+    <li>
+      <a href="#request-pw-recovery ">Request Password Recovery</a>
+    </li>
+    <li>
+      <a href="#recoverypw ">Recover</a>
+    </li>
+    <li>
+      <a href="#current-user ">Get current user</a>
+    </li>
+    <li>
+      <a href="#update-user ">Update user</a>
+    </li>
+    <li>
+      <a href="#get-jwt-token ">Get JWT token</a>
+    </li>
+    <li>
+      <a href="#log-out ">Log out</a>
+    </li>
+  </nav>
+  <!-- api endpoint -->
+  <form name="endpoint" id="form-width">
+    <p>
+      <label>Enter your identity API Endpoint
+        <input type="text " name="apiendpoint" required />
+      </label>
+      <small>( Copy the endpoint on the identity page of your Netlify site dashboard )</small>
+    </p>
+    <p>
+      <button type="submit ">Submit</button>
+    </p>
+    <p id="alert-msg"></p>
+  </form>
+  <!-- sign up -->
+  <article id="signup ">
+    <h2>
+      Sign up
+    </h2>
+    <p>Create a new user with the specified email and password</p>
+    <h3>Example code</h3>
+    <pre class="language-js">
+      <code>
+auth.signup(email, password)
+    .then(response => console.log("Success!Check your inbox! ", response))
+    .catch(error => console.log("It 's an error", error));
+      </code>
+    </pre>
+    <h3>Example response</h3>
+    <pre class="language-js">
+                      <code>
+  {
+    id: 'example-id ',
+    aud: ' ',
+    role: ' ',
+    email: 'example@example.com ',
+    confirmation_sent_at: '2018-04-27T22:36:59.636416916Z ',
+    app_metadata: { provider: 'email ' },
+    user_metadata: null,
+    created_at: '2018-04-27T22:36:59.632133283Z ',
+    updated_at: '2018-04-27T22:37:00.061039863Z '
+  }
+                      </code>
+                    </pre>
+    <h3>Try it out!</h3>
+
+    <form name="signup">
+      <p>
+        <label>Email
+          <input type="email" name="email" required />
+        </label>
+      </p>
+      <p>
+        <label>Password
+          <input type="password" name="password" required />
+        </label>
+      </p>
+      <button type="submit">Sign me up!</button>
+      <div class="message">
+      </div>
+    </form>
+  </article>
+  <!-- confirm -->
+  <article id="confirm">
+    <h2>
+      Confirm
+    </h2>
+    <p>
+      This function confirms a user sign up via a unique confirmation token.
+      <br>
+      <br>When a new user signed up, a confirmation email will be sent to the registered email address.
+      <br>(Make sure
+      <code>Autoconfirm</code> isn't turned on under
+      <a href="https://www.netlify.com/docs/identity/#adding-users">identity settings</a>.)
+    </p>
+    <p>
+      In the email, there's a link that says
+      <i>Confirm your email address</i>. When a user clicks on the link, it'll be redirected to the URL of the site including
+      a
+      <a href="https://en.wikipedia.org/wiki/Fragment_identifier">fragment identifier</a>
+      <code>#confirmation_token=Iyo9xHvsGVbW-9A9v4sDmQ</code>.
+    </p>
+    <p>
+      For security reason, the
+      <code>confirmation_token</code> is hidden from the browser via a redirect. If you wish to manually confirm a user using the
+      <code>auth.confirm(token)</code> method, copy the link location from the email and use the
+      <code>curl -I</code> script to get the confirmation token in your terminal. E.g.,
+    </p>
+    <pre class="language-js">
+                      <code>
+  $ curl -I https://mandrillapp.com/track/click/30002868/example.netlify.com?p=example-token
+  HTTP/1.1 302 Moved Temporarily
+  Server: nginx/1.12.2
+  Date: Tue, 15 May 2018 21:19:13 GMT
+  Content-Type: text/html; charset=utf-8
+  Set-Cookie: PHPSESSID=77c421bf85fa412e5f994f28a6b30956; expires=Wed, 16-May-2018 07:19:13 GMT; path=/; secure; HttpOnly
+  Expires: Thu, 19 Nov 1981 08:52:00 GMT
+  Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+  Pragma: no-cache
+  Set-Cookie: PHPSESSID=77c421bf85fa412e5f994f28a6b30956; expires=Wed, 16-May-2018 07:19:13 GMT; path=/; secure; httponly
+  Location: https://example.netlify.com/#confirmation_token=Iyo9xHvsGVbW-9A9v4sDmQ
+                      </code>
+                    </pre>
+    <h3>Example code</h3>
+    <pre class="language-js">
+                      <code>
+auth
+  .confirm(token)
+  .then(function(response) {
+    console.log("Account confirmed!Welcome to the party!", JSON.stringify({ response }));
+  })
+  .catch(function(e) {
+    console.log(e);
+  });
+                      </code>
+                    </pre>
+    <h3>Example response</h3>
+    <pre class="language-js">
+                      <code>
+{
+  "response": {
+    "api": {
+      "apiURL": "https://example.netlify.com/.netlify/identity",
+      "_sameOrigin": true,
+      "defaultHeaders": {}
+    },
+    "url": "https://example.netlify.com/.netlify/identity",
+    "token": {
+      "access_token": "example-jwt-token",
+      "token_type": "bearer",
+      "expires_in": 3600,
+      "refresh_token": "example-refresh-token",
+      "expires_at": 1526110512000
+    },
+    "id": "example-id",
+    "aud": "",
+    "role": "",
+    "email": "example@netlify.com",
+    "confirmed_at": "2018-05-12T06:35:13Z",
+    "confirmation_sent_at": "2018-05-12T06:34:35Z",
+    "app_metadata": {
+      "provider": "email"
+    },
+    "user_metadata": {},
+    "created_at": "2018-05-12T06:34:35Z",
+    "updated_at": "2018-05-12T06:34:35Z"
+  }
+}
+                      </code>
+                    </pre>
+  </article>
+  <!-- log in -->
+  <article id="log-in">
+    <h2>
+      Log in
+    </h2>
+    <p>Handles user login via the specified email and password</p>
+    <h3>Example code</h3>
+    <pre class="language-js">
+            <code>
+auth
+  .login(email.value, password.value)
+  .then(response => {
+    showMessage("Success! Response: " + JSON.stringify({ response }), form);
+  })
+  .catch(error => showMessage("Failed :( " + JSON.stringify(error), form));
+            </code>
+        </pre>
+    <h3>Example response</h3>
+    <pre class="language-js">
+          <code>
+{
+  "response": {
+    "api": {
+      "apiURL": "https://example.netlify.com/.netlify/identity",
+      "_sameOrigin": true,
+      "defaultHeaders": {}
+    },
+    "url": "https://example.netlify.com/.netlify/identity",
+    "token": {
+      "access_token": "example-jwt-token",
+      "token_type": "bearer",
+      "expires_in": 3600,
+      "refresh_token": "example-refresh-token",
+      "expires_at": 1526062471000
+    },
+    "id": "example-id",
+    "aud": "",
+    "role": "",
+    "email": "example@netlify.com",
+    "confirmed_at": "2018-05-04T23:57:17Z",
+    "app_metadata": {
+      "provider": "email"
+    },
+    "user_metadata": {},
+    "created_at": "2018-05-04T23:57:17Z",
+    "updated_at": "2018-05-04T23:57:17Z"
+  }
+}
+          </code>
+        </pre>
+    <h3>Try it out!</h3>
+    <form name="login">
+      <p>
+        <label>Email
+          <input type="email" name="email" required />
+        </label>
+      </p>
+      <p>
+        <label>Password
+          <input type="password" name="password" required />
+        </label>
+      </p>
+      <p>
+        <button type="submit">Log in</button>
+      </p>
+      <div class="message"></div>
+    </form>
+  </article>
+  <!-- password recovery request -->
+  <article id="request-pw-recovery">
+    <h2>
+      Request password recovery
+    </h2>
+    <p>This function sends a request to GoTrue API and triggers a password recovery email to the specified email address</p>
+    <h3>Example code</h3>
+    <pre class="language-js">
+                        <code>
+auth
+  .requestPasswordRecovery(email)
+  .then(response => console.log("Recovery email sent", { response }))
+  .catch(error => console.log("Error sending recovery mail: %o", error));
+                        </code>
+                      </pre>
+    <h3>Example response</h3>
+    <pre class="language-js">
+                          <code>
+{}
+                          </code>
+                        </pre>
+    <h3>Try it out!</h3>
+    <p>(Make sure you're logged in!)</p>
+    <form name="request_recovery">
+      <div class="form-group">
+        <button type="submit">Request recovery email</button>
+      </div>
+      <div class="message">
+      </div>
+    </form>
+  </article>
+  <!-- password recovery -->
+  <article id="recoverypw">
+    <h2>
+      Account recovery
+    </h2>
+    <p>This function recovers a user account via a recovery token.</p>
+    <p>After a user requested password recovery, an email will be sent to their inbox with a
+      <code>reset password</code> link. A user can login into the site again by clicking on the link. Their browser will be redirected
+      to the URL of the site including a
+      <a href="https://en.wikipedia.org/wiki/Fragment_identifier">fragment identifier</a>
+      <code>recovery_token</code>. For security reason, the
+      <code>recovery_token</code> is hidden from the browser via the redirect. If you wish to test it locally. Use `curl -I` command
+      to substract the
+      <code>recover_token</code> in your terminal. E.g.,
+    </p>
+    <pre class="language-js">
+                        <code>
+  $ curl -I https://mandrillapp.com/track/click/30002868/inspiring-ride-d3b2ae.netlify.com?p=somequery
+  HTTP/1.1 302 Moved Temporarily
+  Server: nginx/1.12.2
+  Date: Wed, 16 May 2018 04:59:31 GMT
+  Content-Type: text/html; charset=utf-8
+  Set-Cookie: PHPSESSID=3edb0b7b2061868b7dfaf0f5f6cb90ec; expires=Wed, 16-May-2018 14:59:31 GMT; path=/; secure; HttpOnly
+  Expires: Thu, 19 Nov 1981 08:52:00 GMT
+  Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+  Pragma: no-cache
+  Set-Cookie: PHPSESSID=3edb0b7b2061868b7dfaf0f5f6cb90ec; expires=Wed, 16-May-2018 14:59:31 GMT; path=/; secure; httponly
+  Location: https://inspiring-ride-d3b2ae.netlify.com/#recovery_token=sOyUPifHLfbzFet_ioB97w
+                        </code>
+                      </pre>
+
+    <h3>Example code</h3>
+    <pre class="language-js">
+                        <code>
+auth
+  .recover(token)
+  .then(response =>
+    console.log("Logged in as %s", JSON.stringify({ response }))
+  )
+  .catch(error => console.log("Failed to verify recover token: %o", error));
+                        </code>
+                      </pre>
+    <h3>Example response</h3>
+    <pre class="language-js">
+                          <code>
+{
+  "response": {
+    "api": {
+      "apiURL": "https://example.netlify.com/.netlify/identity",
+      "_sameOrigin": true,
+      "defaultHeaders": {}
+    },
+    "url": "https://example.netlify.com/.netlify/identity",
+    "token": {
+      "access_token": "example-jwt-token",
+      "token_type": "bearer",
+      "expires_in": 3600,
+      "refresh_token": "example-refresh-token",
+      "expires_at": 1526107729000
+    },
+    "id": "example-id",
+    "aud": "",
+    "role": "",
+    "email": "example@netlify.com",
+    "confirmed_at": "2018-05-12T05:48:49Z",
+    "invited_at": "2018-05-04T23:40:00Z",
+    "recovery_sent_at": "2018-05-12T05:48:13Z",
+    "app_metadata": {
+      "provider": "email"
+    },
+    "user_metadata": {},
+    "created_at": "2018-05-04T23:40:00Z",
+    "updated_at": "2018-05-04T23:40:00Z"
+  }
+}
+                          </code>
+                        </pre>
+  </article>
+  <!-- get current user -->
+  <article id="current-user">
+    <h2>
+      Get current user
+    </h2>
+    <p>This function returns the current user object when a user is logged in.</p>
+    <h3>Example code</h3>
+    <pre class="language-js">
+      <code>
+const user = auth.currentUser();
+      </code>
+    </pre>
+    <h3>Example response</h3>
+    <pre class="language-js">
+                          <code>
+{
+  "api": {
+    "apiURL": "https://example.netlify.com/.netlify/identity",
+    "_sameOrigin": true,
+    "defaultHeaders": {}
+  },
+  "url": "https://example.netlify.com/.netlify/identity",
+  "token": {
+    "access_token": "example-token",
+    "token_type": "bearer",
+    "expires_in": 3600,
+    "refresh_token": "v4w7HfB4xfeKW9m8tg",
+    "expires_at": 1525214326000
+  },
+  "id": "example-id",
+  "aud": "",
+  "role": "",
+  "email": "example@example.com",
+  "confirmed_at": "2018-05-01T19:21:00Z",
+  "app_metadata": {
+    "provider": "email"
+  },
+  "user_metadata": {},
+  "created_at": "2018-05-01T19:21:00Z",
+  "updated_at": "2018-05-01T19:21:00Z"
+}
+                          </code>
+                        </pre>
+    <h3>Try it out!</h3>
+    <p>(Make sure you're logged in)</p>
+    <form name="get_current_user">
+      <button type="submit">Get current user!</button>
+      <div class="message">
+      </div>
+    </form>
+  </article>
+  <!-- update user -->
+  <article id="update-user">
+    <h2>
+      Update user
+    </h2>
+    <p>This function updates a user object with specified attributes.</p>
+    <h3>Example code</h3>
+    <pre class="language-js">
+                        <code>
+const user = auth.currentUser();
+
+user
+  .update({ email: "example@example.com", password: "password" })
+  .then(user => console.log("Updated user %s", user))
+  .catch(error => {
+    console.log("Failed to update user: %o", error);
+    throw error;
+  });
+                        </code>
+                      </pre>
+    <h3>Example response</h3>
+    <pre class="language-js">
+                          <code>
+{
+  "api": {
+    "apiURL": "https://example.netlify.com/.netlify/identity",
+    "_sameOrigin": true,
+    "defaultHeaders": {}
+  },
+  "url": "https://example.netlify.com/.netlify/identity",
+  "token": {
+    "access_token": "example-token",
+    "token_type": "bearer",
+    "expires_in": 3600,
+    "refresh_token": "dSkuYfmkph-mxUVtOA5k_Q",
+    "expires_at": 1525215471000
+  },
+  "id": "example-id",
+  "aud": "",
+  "role": "",
+  "email": "example@example.com",
+  "confirmed_at": "2018-05-01T19:21:00Z",
+  "app_metadata": {
+    "provider": "email"
+  },
+  "user_metadata": {},
+  "created_at": "2018-05-01T19:21:00Z",
+  "updated_at": "2018-05-01T22:04:07.923944421Z",
+  "new_email": "new-example@example.com",
+  "email_change_sent_at": "2018-05-01T22:04:07.49197052Z"
+}
+                          </code>
+                        </pre>
+    <h3>Try it out!</h3>
+    <p>(Make sure you're logged in)</p>
+    <form name="update_user">
+      <p>
+        Your email address:
+      </p>
+      <p id="user-email"></p>
+      <p>
+        <label>New password
+          <input type="password" name="password" required />
+        </label>
+      </p>
+      <button type="submit">Update user!</button>
+      <div class="message">
+      </div>
+    </form>
+  </article>
+  <!-- get jwt token -->
+  <article id="get-jwt-token">
+    <h2>
+      Get JWT token
+    </h2>
+    <p>This function retrieves a JWT token from a currently logged in user</p>
+    <h3>Example code</h3>
+    <pre class="language-js">
+      <code>
+const jwt = user.jwt();
+jwt
+  .then(response => console.log("This is a JWT token", response))
+  .catch(error => {
+    console.log("Error fetching JWT token", error);
+    throw error;
+  });
+      </code>
+    </pre>
+    <h3>Example response</h3>
+    <pre class="language-js">
+                          <code>
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MjUyMTk4MTYsInN1YiI6ImE5NG.98YDkB6B9JbBlDlqqef2nme2tkAnsi30QVys9aevdCw debugger eval code:1:43
+                          </code>
+                        </pre>
+    <h3>Try it out!</h3>
+    <p>(Make sure you're logged in)</p>
+    <form name="get_token">
+      <button type="submit">Get JWT token!</button>
+      <div class="message">
+      </div>
+    </form>
+  </article>
+  <!-- logout -->
+  <article id="log-out">
+    <h2>
+      Log out
+    </h2>
+    <p>This function removes the jwt token of the current user from local storage and log the user out.</p>
+    <h3>Example code</h3>
+    <pre class="language-js">
+                        <code>
+const user = auth.currentUser();
+user
+  .logout()
+  .then(response => console.log("User logged out");)
+  .catch(error => {
+    console.log("Failed to logout user: %o", error);
+    throw error;
+  });
+                        </code>
+                      </pre>
+
+    <h3>Try it out!</h3>
+    <p>(Make sure you're logged in)</p>
+    <form name="log_out">
+      <button type="submit" class="button">Log out</button>
+      <div class="message"></div>
+    </form>
+  </article>
+
+  <!-- scroll to top button -->
+  <span onclick="topFunction()" id="toTop" title="Go to top">Top</span>
+  <script>
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function () {
+      scrollFunction();
+    };
+
+    function scrollFunction() {
+      if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        document.getElementById("toTop").style.display = "block";
+      } else {
+        document.getElementById("toTop").style.display = "none";
+      }
+    }
+
+    // When the user clicks on the button, scroll to the top of the document
+    function topFunction() {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.14.0/prism.min.js"></script>
+  <script src="main.js"></script>
+</body>
+
+</html>
