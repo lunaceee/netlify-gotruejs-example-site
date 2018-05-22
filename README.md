@@ -13,8 +13,8 @@ To run the examples locally, here’s what you’ll need:
 ## Setup
 
 ```
-git clone git@github.com:imorente/gotruejs-examples.git
-cd gotruejs-examples.git
+git clone git@github.com:lunaceee/netlify-gotruejs-example-site.git
+cd netlify-gotruejs-example-site.git
 yarn
 ```
 
@@ -34,7 +34,7 @@ After you do that, you might come across one of the following errors, like I did
 ### Error: Failed to load
 
 ```
-Failed to load https://imorente-gotrue-examples.netlify.com/.netlify/identity/signup:
+Failed to load https://github.com/lunaceee/netlify-gotruejs-example-site/signup:
 Response to preflight request doesn't pass access control check:
 No 'Access-Control-Allow-Origin' header is present on the requested resource.
 Origin 'http://localhost:8082' is therefore not allowed access. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.

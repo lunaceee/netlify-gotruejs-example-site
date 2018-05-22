@@ -13,13 +13,13 @@
   </p>
   <p>
     You can test out the authentication methods with your own site. Take a peek at the
-    <a href="">source code</a> or
-    <a href="">deploy a copy to Netlify</a> to play around with the code by yourself.
+    <a href="https://github.com/lunaceee/netlify-gotruejs-example-site">source code</a> or
+    <a href="https://app.netlify.com/start/deploy?repository=https://github.com/lunaceee/netlify-gotruejs-example-site">deploy a copy to Netlify</a> to play around with the code by yourself.
   </p>
   <h2>Authentication methods</h2>
   <nav class=" ">
     <li>
-      <a href="#signup">Sign up</a>
+      <a href="#sign-up">Sign up</a>
     </li>
     <li>
       <a href="#confirm ">Confirmation</a>
@@ -60,10 +60,9 @@
     <p id="alert-msg"></p>
   </form>
   <!-- sign up -->
-  <article id="signup ">
-    <h2>
-      Sign up
-    </h2>
+    <a name="sign-up"></a>
+  <article >
+    <h2>Sign up</h2>
     <p>Create a new user with the specified email and password</p>
     <h3>Example code</h3>
     <pre class="language-js">
@@ -108,7 +107,8 @@ auth.signup(email, password)
     </form>
   </article>
   <!-- confirm -->
-  <article id="confirm">
+  <a name="confirm"></a>
+  <article>
     <h2>
       Confirm
     </h2>
@@ -131,11 +131,11 @@ auth.signup(email, password)
       For security reason, the
       <code>confirmation_token</code> is hidden from the browser via a redirect. If you wish to manually confirm a user using the
       <code>auth.confirm(token)</code> method, copy the link location from the email and use the
-      <code>curl -I</code> script to get the confirmation token in your terminal. E.g.,
+      <code>curl -I</code> script to get the confirmation token in your terminal. For example,
     </p>
     <pre class="language-js">
                       <code>
-  $ curl -I https://mandrillapp.com/track/click/30002868/example.netlify.com?p=example-token
+  curl -I https://mandrillapp.com/track/click/30002868/example.netlify.com?p=example-token
   HTTP/1.1 302 Moved Temporarily
   Server: nginx/1.12.2
   Date: Tue, 15 May 2018 21:19:13 GMT
@@ -197,7 +197,8 @@ auth
                     </pre>
   </article>
   <!-- log in -->
-  <article id="log-in">
+  <a name="log-in"></a>
+  <article>
     <h2>
       Log in
     </h2>
@@ -265,7 +266,8 @@ auth
     </form>
   </article>
   <!-- password recovery request -->
-  <article id="request-pw-recovery">
+  <a name="request-pw-recovery"></a>
+  <article>
     <h2>
       Request password recovery
     </h2>
@@ -296,7 +298,8 @@ auth
     </form>
   </article>
   <!-- password recovery -->
-  <article id="recoverypw">
+  <a name="recoverypw"></a>
+  <article>
     <h2>
       Account recovery
     </h2>
@@ -308,11 +311,11 @@ auth
       <code>recovery_token</code>. For security reason, the
       <code>recovery_token</code> is hidden from the browser via the redirect. If you wish to test it locally. Use `curl -I` command
       to substract the
-      <code>recover_token</code> in your terminal. E.g.,
+      <code>recover_token</code> in your terminal. For example,
     </p>
     <pre class="language-js">
                         <code>
-  $ curl -I https://mandrillapp.com/track/click/30002868/inspiring-ride-d3b2ae.netlify.com?p=somequery
+  curl -I https://mandrillapp.com/track/click/30002868/inspiring-ride-d3b2ae.netlify.com?p=somequery
   HTTP/1.1 302 Moved Temporarily
   Server: nginx/1.12.2
   Date: Wed, 16 May 2018 04:59:31 GMT
@@ -374,7 +377,8 @@ auth
                         </pre>
   </article>
   <!-- get current user -->
-  <article id="current-user">
+  <a name="current-user"></a>
+  <article>
     <h2>
       Get current user
     </h2>
@@ -425,7 +429,8 @@ const user = auth.currentUser();
     </form>
   </article>
   <!-- update user -->
-  <article id="update-user">
+  <a name="update-user"></a>
+  <article>
     <h2>
       Update user
     </h2>
@@ -495,7 +500,8 @@ user
     </form>
   </article>
   <!-- get jwt token -->
-  <article id="get-jwt-token">
+  <a name="get-jwt-token"></a>
+  <article>
     <h2>
       Get JWT token
     </h2>
@@ -527,7 +533,8 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MjUyMTk4MTYsInN1YiI6ImE5NG.98YD
     </form>
   </article>
   <!-- logout -->
-  <article id="log-out">
+  <a name="log-out"></a>
+  <article>
     <h2>
       Log out
     </h2>
@@ -557,25 +564,25 @@ user
   <!-- scroll to top button -->
   <span onclick="topFunction()" id="toTop" title="Go to top">Top</span>
   <script>
-    // When the user scrolls down 20px from the top of the document, show the button
-    window.onscroll = function () {
-      scrollFunction();
-    };
+  // When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {
+  scrollFunction();
+};
 
-    function scrollFunction() {
-      if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-        document.getElementById("toTop").style.display = "block";
-      } else {
-        document.getElementById("toTop").style.display = "none";
-      }
-    }
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    document.getElementById("toTop").style.display = "block";
+  } else {
+    document.getElementById("toTop").style.display = "none";
+  }
+}
 
-    // When the user clicks on the button, scroll to the top of the document
-    function topFunction() {
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
-    }
-  </script>
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+</script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.14.0/prism.min.js"></script>
   <script src="main.js"></script>
 </body>
