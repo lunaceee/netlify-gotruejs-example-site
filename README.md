@@ -1,6 +1,6 @@
 # GoTrue JS Examples
 
-Hi there! This is my playground repo to test out Netlify’s [GoTrue JS](https://github.com/netlify/gotrue-js) client library. You can see a live demo of the examples at [link]().
+Hi there! This is my playground repo to test out Netlify’s [GoTrue JS](https://github.com/netlify/gotrue-js) client library. You can see a live demo of the examples at [link](https://lunaceee-gotruejs.netlify.com/).
 
 To run the examples locally, here’s what you’ll need:
 
