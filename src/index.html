@@ -4,6 +4,8 @@
 <head>
   <title>GoTrue JS Demo Site</title>
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500|Roboto+Mono" rel="stylesheet">
+  <!-- reCAPTCHA -->
+  <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 
 <body>
@@ -90,7 +92,7 @@ auth.signup(email, password)
                     </pre>
     <h3>Try it out!</h3>
 
-    <form name="signup">
+    <form name="signup" data-netlify-recaptcha="true">
       <p>
         <label>Email
           <input type="email" name="email" required />
@@ -104,6 +106,7 @@ auth.signup(email, password)
       <button type="submit">Sign me up!</button>
       <div class="message">
       </div>
+      <div class="g-recaptcha" data-sitekey="6LfYaFwUAAAAAGx0V9YTlXIjK2zoiwcJDRotsHoZ"></div>
     </form>
   </article>
   <!-- confirm -->
